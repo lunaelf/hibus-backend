@@ -18,17 +18,21 @@ class Line(models.Model):
     # 预计时间，分钟
     estimate_minute = models.PositiveIntegerField()
     # 起点车站，维度
-    start_latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    start_latitude = models.DecimalField(
+        max_digits=10, decimal_places=7, blank=True, null=True)
     # 起点车站，经度
-    start_longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    start_longitude = models.DecimalField(
+        max_digits=10, decimal_places=7, blank=True, null=True)
     # 起点车站，位置
-    start_location = models.CharField(max_length=200)
+    start_location = models.CharField(max_length=200, blank=True)
     # 终点车站，维度
-    end_latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    end_latitude = models.DecimalField(
+        max_digits=10, decimal_places=7, blank=True, null=True)
     # 终点车站，经度
-    end_longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    end_longitude = models.DecimalField(
+        max_digits=10, decimal_places=7, blank=True, null=True)
     # 终点车站，位置
-    end_location = models.CharField(max_length=200)
+    end_location = models.CharField(max_length=200, blank=True)
     # 创建时间
     create_time = models.DateTimeField(auto_now_add=True)
 
