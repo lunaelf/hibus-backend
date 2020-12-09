@@ -9,6 +9,8 @@ urlpatterns = [
     path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
     path('lines/', views.LineList.as_view(), name='line-list'),
     path('lines/<int:pk>/', views.LineDetail.as_view(), name='line-detail'),
+    path('buses/', views.BusList.as_view(), name='bus-list'),
+    path('buses/<int:pk>/', views.BusDetail.as_view(), name='bus-detail'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

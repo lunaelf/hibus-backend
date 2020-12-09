@@ -19,20 +19,20 @@ class Line(models.Model):
     estimate_minute = models.PositiveIntegerField()
     # 起点车站，维度
     start_latitude = models.DecimalField(
-        max_digits=10, decimal_places=7, blank=True, null=True)
+        max_digits=10, decimal_places=7, null=True)
     # 起点车站，经度
     start_longitude = models.DecimalField(
-        max_digits=10, decimal_places=7, blank=True, null=True)
+        max_digits=10, decimal_places=7, null=True)
     # 起点车站，位置
-    start_location = models.CharField(max_length=200, blank=True)
+    start_location = models.CharField(max_length=200, default='')
     # 终点车站，维度
     end_latitude = models.DecimalField(
-        max_digits=10, decimal_places=7, blank=True, null=True)
+        max_digits=10, decimal_places=7, null=True)
     # 终点车站，经度
     end_longitude = models.DecimalField(
-        max_digits=10, decimal_places=7, blank=True, null=True)
+        max_digits=10, decimal_places=7, null=True)
     # 终点车站，位置
-    end_location = models.CharField(max_length=200, blank=True)
+    end_location = models.CharField(max_length=200, default='')
     # 创建时间
     create_time = models.DateTimeField(auto_now_add=True)
 
@@ -44,23 +44,25 @@ class Bus(models.Model):
     # 路线 id
     line_id = models.ForeignKey(Line, on_delete=models.CASCADE)
     # 车牌号
-    bus_number = models.CharField(max_length=20)
+    bus_number = models.CharField(max_length=20, unique=True)
     # 初始票价
     ticket_price = models.DecimalField(max_digits=20, decimal_places=2)
     # 票价阀值，用来计算拼单价格
     threshold_price = models.DecimalField(max_digits=20, decimal_places=2)
     # 当前乘客人数
-    current_passenger = models.PositiveIntegerField()
+    current_passenger = models.PositiveIntegerField(default=0)
     # 最大乘客人数
     threshold_passenger = models.PositiveIntegerField()
     # 维度
-    latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7, null=True)
     # 经度
-    longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    longitude = models.DecimalField(max_digits=10, decimal_places=7, null=True)
     # 位置
-    location = models.CharField(max_length=200)
-    # 客车状态，[0=在起点, 1=在终点, 2=已派单, 3=行程中]
-    status = models.IntegerField()
+    location = models.CharField(max_length=200, default='')
+    # 当前所在车站
+    station = models.CharField(max_length=50)
+    # 客车状态，[0=空闲, 1=已派单, 2=行程中]
+    status = models.IntegerField(default=0)
     # 创建时间
     create_time = models.DateTimeField(auto_now_add=True)
 
