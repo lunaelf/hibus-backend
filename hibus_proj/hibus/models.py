@@ -78,17 +78,19 @@ class Order(models.Model):
     # 路线 id
     line_id = models.ForeignKey(Line, on_delete=models.CASCADE)
     # 订单号
-    order_number = models.UUIDField(default=uuid.uuid4, editable=False)
+    order_number = models.UUIDField()
     # 上一级订单号，用来确定是否为拼单
     base_order_number = models.UUIDField()
+    # 订单类型，[0=客车定制, 1=客车拼单]
+    order_type = models.IntegerField()
     # 下单时间
     order_time = models.DateTimeField(auto_now_add=True)
     # 乘客人数
-    passenger = models.PositiveIntegerField()
+    passenger = models.PositiveIntegerField(default=1)
     # 支付金额
     payment = models.DecimalField(max_digits=20, decimal_places=2)
     # 订单状态，[0=已下单]
-    status = models.IntegerField()
+    status = models.IntegerField(default=0)
     # 客车预计发车时间
     bus_start_time = models.DateTimeField()
     # 客车预计到达时间

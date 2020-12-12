@@ -3,8 +3,8 @@ from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from hibus_proj.hibus.models import Line, Bus
-from hibus_proj.hibus.serializers import UserSerializer, LineSerializer, BusSerializer
+from hibus_proj.hibus.models import Line, Bus, Order
+from hibus_proj.hibus.serializers import UserSerializer, LineSerializer, BusSerializer, OrderSerializer
 
 # Create your views here.
 
@@ -15,6 +15,7 @@ def api_root(request, format=None):
         'users': reverse('user-list', request=request, format=format),
         'lines': reverse('line-list', request=request, format=format),
         'buses': reverse('bus-list', request=request, format=format),
+        'orders': reverse('order-list', request=request, format=format),
     })
 
 
@@ -46,3 +47,13 @@ class BusList(generics.ListCreateAPIView):
 class BusDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bus.objects.all()
     serializer_class = BusSerializer
+
+
+class OrderList(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
