@@ -34,6 +34,8 @@ class UserDetail(generics.RetrieveAPIView):
 class LineList(generics.ListCreateAPIView):
     queryset = Line.objects.all()
     serializer_class = LineSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['station_start', 'station_end']
 
 
 class LineDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -55,7 +57,7 @@ class OrderList(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = ['user_id', 'order_type', 'status']
+    filterset_fields = ['user_id', 'bus_id', 'line_id', 'order_type', 'status', 'station_start']
     ordering_fields = ['order_time']
     ordering = ['-order_time']
 

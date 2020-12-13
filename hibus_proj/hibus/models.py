@@ -63,6 +63,8 @@ class Bus(models.Model):
     station = models.CharField(max_length=50)
     # 客车状态，[0=空闲, 1=已派单, 2=行程中]
     status = models.IntegerField(default=0)
+    # 司机手机号
+    driver_phone = models.IntegerField()
     # 创建时间
     create_time = models.DateTimeField(auto_now_add=True)
 
@@ -89,7 +91,7 @@ class Order(models.Model):
     passenger = models.PositiveIntegerField(default=1)
     # 支付金额
     payment = models.DecimalField(max_digits=20, decimal_places=2)
-    # 订单状态，[0=已下单]
+    # 订单状态，[0=已下单, 1=已完成]
     status = models.IntegerField(default=0)
     # 客车预计发车时间
     bus_start_time = models.DateTimeField()
@@ -101,6 +103,3 @@ class Order(models.Model):
     station_end = models.CharField(max_length=50)
     # 创建时间
     create_time = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-create_time']
