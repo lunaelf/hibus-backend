@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from rest_framework import filters
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from django_filters.rest_framework import DjangoFilterBackend
 from hibus_proj.hibus.models import Line, Bus, Order
 from hibus_proj.hibus.serializers import UserSerializer, LineSerializer, BusSerializer, OrderSerializer
 
@@ -52,6 +54,10 @@ class BusDetail(generics.RetrieveUpdateDestroyAPIView):
 class OrderList(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['user_id', 'order_type', 'status']
+    ordering_fields = ['order_time']
+    ordering = ['-order_time']
 
 
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
