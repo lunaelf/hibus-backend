@@ -34,6 +34,8 @@ class UserDetail(generics.RetrieveAPIView):
 class LineList(generics.ListCreateAPIView):
     queryset = Line.objects.all()
     serializer_class = LineSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['station_start', 'station_end']
 
 
 class LineDetail(generics.RetrieveUpdateDestroyAPIView):
