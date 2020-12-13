@@ -25,7 +25,7 @@ class BusSerializer(serializers.HyperlinkedModelSerializer):
         model = Bus
         fields = ['url', 'id', 'line_id', 'bus_number', 'ticket_price', 'threshold_price',
                   'current_passenger', 'threshold_passenger', 'latitude', 'longitude',
-                  'location', 'station', 'status']
+                  'location', 'station', 'status', 'driver_phone']
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):

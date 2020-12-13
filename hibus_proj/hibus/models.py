@@ -63,6 +63,8 @@ class Bus(models.Model):
     station = models.CharField(max_length=50)
     # 客车状态，[0=空闲, 1=已派单, 2=行程中]
     status = models.IntegerField(default=0)
+    # 司机手机号
+    driver_phone = models.IntegerField()
     # 创建时间
     create_time = models.DateTimeField(auto_now_add=True)
 
