@@ -21,7 +21,6 @@ urlpatterns = [
     path('buses/<int:pk>/', views.BusDetail.as_view(), name='bus-detail'),
     path('orders/', views.OrderList.as_view(), name='order-list'),
     path('orders/<int:pk>/', views.OrderDetail.as_view(), name='order-detail'),
-    
     path('userinf/', userinf.queryUser),
     path('queryorder/', order.queryOrder),
     path('saveorder/', order.saveOrder),

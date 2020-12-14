@@ -62,9 +62,9 @@ class Bus(models.Model):
     # 初始票价
     ticket_price = models.DecimalField(max_digits=20, decimal_places=2)
     # 票价阀值，用来计算拼单价格
-    threshold_price = models.DecimalField(max_digits=20, decimal_places=2)
+    threshold_price = models.DecimalField(max_digits=20, decimal_places=2,blank=True, null=True)
     # 当前乘客人数
-    current_passenger = models.PositiveIntegerField(default=0)
+    current_passenger = models.PositiveIntegerField(default=0,blank=True, null=True)
     # 最大乘客人数
     threshold_passenger = models.PositiveIntegerField()
     # 维度
@@ -74,7 +74,7 @@ class Bus(models.Model):
     # 位置
     location = models.CharField(max_length=200, default='')
     # 当前所在车站
-    station = models.CharField(max_length=50)
+    station = models.CharField(max_length=50,blank=True, null=True)
     # 客车状态，[0=空闲, 1=已派单, 2=行程中]
     status = models.IntegerField(default=0)
     # 司机手机号
@@ -88,15 +88,15 @@ class Order(models.Model):
     订单表
     """
     # 用户 id
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
     # 客车 id
-    bus_id = models.ForeignKey(Bus, on_delete=models.CASCADE)
+    bus_id = models.ForeignKey(Bus, on_delete=models.CASCADE, to_field='id')
     # 路线 id
-    line_id = models.ForeignKey(Line, on_delete=models.CASCADE)
+    line_id = models.ForeignKey(Line, on_delete=models.CASCADE,blank=True, null=True)
     # 订单号
-    order_number = models.UUIDField()
+    order_number = models.UUIDField(blank=True, null=True)
     # 上一级订单号，用来确定是否为拼单
-    base_order_number = models.UUIDField()
+    base_order_number = models.UUIDField(blank=True, null=True)
     # 订单类型，[0=客车定制, 1=客车拼单]
     order_type = models.IntegerField()
     # 下单时间
@@ -110,9 +110,9 @@ class Order(models.Model):
     # 客车预计发车时间
     bus_start_time = models.DateTimeField()
     # 客车预计到达时间
-    bus_end_time = models.DateTimeField()
+    bus_end_time = models.DateTimeField(blank=True, null=True)
     # 起点车站名
-    station_start = models.CharField(max_length=50)
+    station_start = models.CharField(max_length=50,blank=True, null=True)
     # 终点车站名
     station_end = models.CharField(max_length=50)
     # 创建时间
