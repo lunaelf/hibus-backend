@@ -88,7 +88,7 @@ class Order(models.Model):
     订单表
     """
     # 用户 id
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
+    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE, to_field='id')
     # 客车 id
     bus_id = models.ForeignKey(Bus, on_delete=models.CASCADE, to_field='id')
     # 路线 id
