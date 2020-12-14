@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from hibus_proj.hibus.models import Line, Bus, Order
+from hibus_proj.hibus.models import Line, Bus, Order, CustomUser
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -8,6 +8,13 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ['url', 'id', 'username']
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'password', 'is_admin']
 
 
 class LineSerializer(serializers.HyperlinkedModelSerializer):

@@ -5,6 +5,20 @@ import uuid
 # Create your models here.
 
 
+class CustomUser(models.Model):
+    """
+    用户表
+    """
+    # 用户名
+    username = models.CharField(max_length=50, unique=True)
+    # 密码
+    password = models.CharField(max_length=256)
+    # 是否管理员，[0=普通用户, 1=管理员]
+    is_admin = models.IntegerField(default=0)
+    # 创建时间
+    create_time = models.DateTimeField(auto_now_add=True)
+
+
 class Line(models.Model):
     """
     路线表

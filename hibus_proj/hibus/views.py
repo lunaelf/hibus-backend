@@ -1,13 +1,13 @@
 from django.contrib.auth.models import User
 from rest_framework import filters
 from rest_framework import generics
-from rest_framework import status
+from rest_framework import status, exceptions
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django_filters.rest_framework import DjangoFilterBackend
-from hibus_proj.hibus.models import Line, Bus, Order
-from hibus_proj.hibus.serializers import UserSerializer, LineSerializer, BusSerializer, OrderSerializer
+from hibus_proj.hibus.models import Line, Bus, Order, CustomUser
+from hibus_proj.hibus.serializers import UserSerializer, LineSerializer, BusSerializer, OrderSerializer, CustomUserSerializer
 import uuid
 
 # Create your views here.
@@ -16,7 +16,11 @@ import uuid
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'users': reverse('user-list', request=request, format=format),
+        # 'users': reverse('user-list', request=request, format=format),
+        'login': reverse('login', request=request, format=format),
+        'logout': reverse('logout', request=request, format=format),
+        'register': reverse('register', request=request, format=format),
+        'custom-users': reverse('custom-user-list', request=request, format=format),
         'lines': reverse('line-list', request=request, format=format),
         'buses': reverse('bus-list', request=request, format=format),
         'orders': reverse('order-list', request=request, format=format),
@@ -31,6 +35,60 @@ class UserList(generics.ListAPIView):
 class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+@api_view(['POST'])
+def login(request, format=None):
+    username = request.query_params.get('username')
+    password = request.query_params.get('password')
+    try:
+        user = CustomUser.objects.get(username=username)
+        # TODO: 加密
+        pwd = password
+        if user.password == pwd:
+            serializer = CustomUserSerializer(user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+    except CustomUser.DoesNotExist:
+        return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def logout(request, format=None):
+    data = {
+        'msg': 'success',
+    }
+    return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def register(request, format=None):
+    username = request.query_params.get('username')
+    password = request.query_params.get('password')
+    is_admin = request.query_params.get('is_admin', 0)
+
+    # TODO: 加密
+    pwd = password
+    request.data.update(
+        {'username': username, 'password': pwd, 'is_admin': is_admin})
+
+    serializer = CustomUserSerializer(data=request.data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomUserList(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
+
+class CustomUserDetail(generics.RetrieveAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
 
 
 class LineList(generics.ListCreateAPIView):
