@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import status, exceptions
@@ -41,25 +43,21 @@ class UserDetail(generics.RetrieveAPIView):
 def login(request, format=None):
     username = request.query_params.get('username')
     password = request.query_params.get('password')
+
     try:
         user = CustomUser.objects.get(username=username)
-        # TODO: 加密
-        pwd = password
-        if user.password == pwd:
+        if check_password(password, user.password):
             serializer = CustomUserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(serializer.data, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'msg': '用户名或密码错误'}, status=status.HTTP_401_UNAUTHORIZED)
     except CustomUser.DoesNotExist:
-        return Response(serializer.data, status=status.HTTP_404_NOT_FOUND)
+        return Response({'msg': '用户名或密码错误'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])
 def logout(request, format=None):
-    data = {
-        'msg': 'success',
-    }
-    return Response(status=status.HTTP_200_OK)
+    return Response({'msg': '登出成功'}, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
@@ -68,11 +66,8 @@ def register(request, format=None):
     password = request.query_params.get('password')
     is_admin = request.query_params.get('is_admin', 0)
 
-    # TODO: 加密
-    pwd = password
     request.data.update(
-        {'username': username, 'password': pwd, 'is_admin': is_admin})
-
+        {'username': username, 'password': make_password(password), 'is_admin': is_admin})
     serializer = CustomUserSerializer(data=request.data)
 
     if serializer.is_valid():
