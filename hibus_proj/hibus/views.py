@@ -41,8 +41,10 @@ class UserDetail(generics.RetrieveAPIView):
 
 @api_view(['POST'])
 def login(request, format=None):
-    username = request.query_params.get('username')
-    password = request.query_params.get('password')
+    # username = request.query_params.get('username')
+    # password = request.query_params.get('password')
+    username = request.data.get('username')
+    password = request.data.get('password')
 
     try:
         user = CustomUser.objects.get(username=username)
