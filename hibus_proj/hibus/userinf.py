@@ -2,7 +2,6 @@ from django.http import JsonResponse
 from django.http import HttpRequest
 from django.db.models.query import QuerySet
 from hibus_proj.hibus import models
-from django.contrib.auth.models import User
 
 
 
@@ -23,5 +22,5 @@ def queryUser(request):
     # 修改:__in=用于读取区间
     # books = models.Book.objects.filter(pk__in=[7,8]).update(price=888)
     # userinf = models.User.objects.values().filter(pk=id)#pk是主键
-    userinf = User.objects.values().filter(pk=id)
+    userinf = models.CustomUser.objects.values().filter(pk=id)
     return JsonResponse(userinf ,safe=False,content_type='application/json')
