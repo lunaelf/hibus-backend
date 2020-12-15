@@ -61,4 +61,5 @@ def saveOrder(request):
         return HttpResponse("res")
     else:#拼单
         models.Order.objects.create(order_type=1,station_end=request.POST.get("station_end"),bus_start_time=request.POST.get("bus_start_time"),bus_id_id=request.POST.get("bus_id"),user_id_id=request.POST.get("user_id"),payment=request.POST.get("payment"),passenger=request.POST.get("passenger"))
+        models.Order.objects.filter(pk=request.POST.get("id")).update(passenger=request.POST.get("passenger"))
         return HttpResponse("res")
