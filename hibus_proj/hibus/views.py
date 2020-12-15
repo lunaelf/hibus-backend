@@ -64,9 +64,12 @@ def logout(request, format=None):
 
 @api_view(['POST'])
 def register(request, format=None):
-    username = request.query_params.get('username')
-    password = request.query_params.get('password')
-    is_admin = request.query_params.get('is_admin', 0)
+    # username = request.query_params.get('username')
+    # password = request.query_params.get('password')
+    # is_admin = request.query_params.get('is_admin', 0)
+    username = request.data.get('username')
+    password = request.data.get('password')
+    is_admin = request.data.get('is_admin', 0)
 
     request.data.update(
         {'username': username, 'password': make_password(password), 'is_admin': is_admin})
