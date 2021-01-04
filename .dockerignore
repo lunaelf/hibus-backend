@@ -1,0 +1,7 @@
+env
+
+# SQLite 3
+db.sqlite3
+
+# VS Code
+.vscode
